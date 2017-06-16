@@ -41,6 +41,10 @@ describe('Helpers', function () {
             res.sendStatus(200);
         });
 
+        app.get(/\/rege./, function (req, res) {
+            res.sendStatus(200);
+        });
+
         // Routes defined on the a subrouter or "micro-app".
         var router = express.Router();
 
@@ -133,6 +137,16 @@ describe('Helpers', function () {
             .end(function (err, res) {
               if (err) return done(err);
               s.expectMessage('express.response_time.GET_foo_param_bar:0|ms', done);
+            });
+        });
+
+        it('/rege.+ → "GET_rege_"', function (done) {
+          supertest(baseUrl)
+            .get('/regeX')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              s.expectMessage('express.response_time.GET_\\_rege.:0|ms', done);
             });
         });
 
