@@ -25,6 +25,9 @@ sdc.close(); // Optional - stop NOW
 API
 ---
 
+### Setup
+- react-native link react-native-udp
+
 ### Initialization
 
 ```javascript
