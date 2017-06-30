@@ -1,9 +1,10 @@
-node-statsd-client
+react-native-statsd-client
 ==================
 
-Node.js client for [statsd](https://github.com/etsy/statsd).
+react-native-client for [statsd](https://github.com/etsy/statsd).
+originally forked from https://github.com/msiebuhr/node-statsd-client to add react-native support
 
-[![Build Status](https://secure.travis-ci.org/msiebuhr/node-statsd-client.png?branch=master)](http://travis-ci.org/msiebuhr/node-statsd-client)
+[![Build Status]
 
 Quick tour
 ----------
@@ -208,6 +209,12 @@ What's broken
 -------------
 
 Check the [GitHub issues](https://github.com/msiebuhr/node-statsd-client/issues).
+
+TODOS
+-------
+
+1. Add support for TCP
+2. Add support for http
 
 LICENSE
 -------
