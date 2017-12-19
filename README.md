@@ -10,7 +10,7 @@ Quick tour
 ----------
 
 ```javascript
-var SDC = require('statsd-client'),
+var SDC = require('react-native-statsd-client'),
 	sdc = new SDC({host: 'statsd.example.com'});
 
 var timer = new Date();
@@ -25,13 +25,38 @@ sdc.close(); // Optional - stop NOW
 API
 ---
 
-### Setup
+### Setup iOS
+- add dependency to package.json & npm install
 - react-native link react-native-udp
+
+### Setup Android
+- add dependency to package.json & npm install
+- add to android/settings.gradle:
+```java
+include ':react-native-udp'
+project(':react-native-udp').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-udp/android/')
+```
+
+- add to android/app/build.gradle dependencies:
+```java
+compile project(':react-native-udp')
+```
+
+- add to MainApplication.java:
+```java
+import com.tradle.react.UdpSocketsModule;  <-- add this
+
+return Arrays.<ReactPackage>asList(
+    new MainReactPackage(),
+        new UdpSocketsModule()  <-- add this
+);
+```
+
 
 ### Initialization
 
 ```javascript
-var SDC = require('statsd-client'),
+var SDC = require('react-native-statsd-client'),
 	sdc = new SDC({host: 'statsd.example.com', port: 8124, debug: true});
 ```
 
