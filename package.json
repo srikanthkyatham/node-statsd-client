@@ -10,7 +10,7 @@
     "udp",
     "tcp"
   ],
-  "version": "0.4.1",
+  "version": "0.4.3",
   "homepage": "https://github.com/srikanthkyatham/react-native-statsd-client",
   "bugs": "https://github.com/srikanthkyatham/react-native-statsd-client/issues",
   "repository": {
@@ -21,7 +21,7 @@
     "dgram": "react-native-udp"
   },
   "main": "lib/statsd-client.js",
-  "dependencies": {
+  "peerDependencies": {
     "buffer": "^5.0.7",
     "react-native-udp": "^2.0.0"
   },
