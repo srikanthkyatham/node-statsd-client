@@ -57,12 +57,11 @@ return Arrays.<ReactPackage>asList(
 
 ```javascript
 var SDC = require('react-native-statsd-client'),
-	sdc = new SDC({host: 'statsd.example.com', port: 8124, debug: true});
+	sdc = new SDC({host: 'statsd.example.com', port: 8124});
 ```
 
 Global options:
  * `prefix`: Prefix all stats with this value (default `""`).
- * `debug`: Print what is being sent to stderr (default `false`).
  * `tcp`: User specifically wants to use tcp (default `false`).
  * `socketTimeout`: Dual-use timer. Will flush metrics every interval. For UDP,
    it auto-closes the socket after this long without activity (default 1000 ms;
@@ -72,6 +71,7 @@ Global options:
 UDP options:
  * `host`: Where to send the stats (default `localhost`).
  * `port`: Port to contact the statsd-daemon on (default `8125`).
+ * `ipv6`: Use IPv6 instead of IPv4 (default `false`).
 
 TCP options:
  * `host`: Where to send the stats (default `localhost`).
@@ -82,6 +82,8 @@ HTTP options:
  * `host`: The URL to send metrics to (default: `http://localhost`).
  * `headers`: Additional headers to send (default `{}`)
  * `method`: What HTTP method to use (default `PUT`)
+
+To debug, set the environment variable `NODE_DEBUG=statsd-client` when running your program.
 
 ### Counting stuff
 
@@ -191,6 +193,40 @@ at a later point.
 
 The `/` page will appear as `root` (e.g. `GET_root`) in metrics while any not found route will appear as `{METHOD}_unknown_express_route`. You can change that name by setting the `notFoundRouteName` in the middleware options.
 
+
+### Callback helper
+
+There's also a helper for measuring stuff with regards to a callback:
+
+```javascript
+var SDC = requrire('statsd-client');
+	sdc = new SDC({...});
+
+function doSomethingAsync(arg, callback) {
+	callback = sdc.helpers.wrapCallback('somePrefix', callback);
+	// ... do something ...
+	return callback(null);
+}
+```
+
+The callback is overwritten with a shimmed version that counts the
+number of errors (`prefix.err`) and successes (`prefix.ok`) and
+the time of execution of the function (`prefix.time`).
+You invoked the shimmed callback exactly the same way as though
+there was no shim at all. Yes, you get metrics for your function in
+a single line of code.
+
+Note that the start of execution time is marked as soon as you
+invoke `sdc.helpers.wrapCallback()`.
+
+You can also provide more options:
+
+```javascript
+sdc.helpers.wrapCallback('somePrefix', callback, {
+	tags: { foo: 'bar' }
+});
+```
+
 ### Stopping gracefully
 
 By default, the socket is closed if it hasn't been used for a second (see
@@ -243,6 +279,13 @@ TODOS
 
 1. Add support for TCP
 2. Add support for http
+
+Other resources
+---------------
+
+ * [statsd-tail](https://github.com/msiebuhr/statsd-tail) - A simple program to grab statsd-data on localhost
+ * [hot-shots](https://www.npmjs.com/package/hot-shots) - Another popular statsd client for Node.js
+ * [statsd](https://github.com/etsy/statsd) - The canonical server
 
 LICENSE
 -------
